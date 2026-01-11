@@ -1,20 +1,67 @@
-<script>
-    /* tên yêu cầu của biến đó password */
-    const password = "686868"; // **THAY BẰNG MẬT KHẨU CỦA BẠN**
-    /* tên yêu cầu của biến đó targetURL */
-    const targetURL = "https://qlgd.bhs.edu.vn/"; // **THAY BẰNG LINK GỐC CỦA BẠN**
-    /* tên yêu cầu của biến đó user */
-    const user = prompt("Vui lòng nhập mật khẩu để truy cập:");
-
-    if (user === password) {
-        window.location.href = targetURL;
-    } else {
-        alert("Mật khẩu không đúng. Truy cập bị từ chối.");
+<style>
+    /* Màn hình nền mờ */
+    #nt-overlay {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.8); z-index: 99999;
+        display: flex; justify-content: center; align-items: center;
+        backdrop-filter: blur(4px); font-family: Arial, sans-serif;
     }
-    /* nơi kết thúc kiểm tra */
+    /* Khung nhập liệu */
+    #nt-box {
+        background: #fff; padding: 30px; border-radius: 8px;
+        width: 320px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
+    #nt-box h3 { margin: 0 0 15px; color: #333; }
+    #nt-box input {
+        width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc;
+        border-radius: 4px; box-sizing: border-box; font-size: 16px;
+    }
+    #nt-box button {
+        width: 100%; padding: 10px; border: none; border-radius: 4px;
+        font-size: 16px; font-weight: bold; cursor: pointer;
+        background: #007bff; color: #fff; transition: 0.2s;
+    }
+    #nt-box button:hover { background: #0056b3; }
+    #nt-msg { color: #dc3545; margin-top: 10px; font-size: 14px; min-height: 20px; }
+</style>
+
+<div id="nt-overlay">
+    <div id="nt-box">
+        <h3>Yêu cầu truy cập</h3>
+        <input type="password" id="nt-pass" placeholder="Nhập mật khẩu..." autofocus>
+        <button onclick="checkPass()">XÁC NHẬN</button>
+        <div id="nt-msg"></div>
+    </div>
+</div>
+
+<script>
+    /* CẤU HÌNH */
+    const password = "686868";
+    
+    /* Link gốc: https://qlgd.bhs.edu.vn/ (Đã mã hóa Base64 để ẩn link) */
+    const targetURL = atob("aHR0cHM6Ly9xbGZkLmJocy5lZHUudm4v");
+    
+    /* Xử lý kiểm tra */
+    function checkPass() {
+        var input = document.getElementById("nt-pass").value;
+        var msg = document.getElementById("nt-msg");
+
+        if (input === password) {
+            msg.style.color = "green";
+            msg.innerText = "Mật khẩu đúng! Đang chuyển hướng...";
+            window.location.href = targetURL;
+        } else {
+            msg.style.color = "red";
+            msg.innerText = "Mật khẩu không đúng. Vui lòng thử lại.";
+            document.getElementById("nt-pass").value = "";
+            document.getElementById("nt-pass").focus();
+        }
+    }
+
+    /* Bắt sự kiện phím Enter */
+    document.getElementById("nt-pass").addEventListener("keypress", function(event) {
+        if (event.key === "Enter") { checkPass(); }
+    });
 </script>
 
-<h1>Vui lòng F5 tải lại trang nhập mật khẩu.....</h1>
-
-
-
+<h1>Vui lòng nhập mật khẩu ở bảng hiện ra...</h1>
